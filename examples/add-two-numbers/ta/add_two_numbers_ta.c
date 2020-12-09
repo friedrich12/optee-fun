@@ -12,7 +12,7 @@ TA_CreateEntryPoint(void){
 }
 
 void 
-TA_DestoryEntryPoint(void){
+TA_DestroyEntryPoint(void){
     // Do nothing    
 }
 
@@ -39,7 +39,7 @@ TA_OpenSessionEntryPoint(uint32_t param_types,
 void 
 TA_CloseSessionEntryPoint(void __maybe_unused *sess_ctx){
     (void)&sess_ctx; /* unused parameter*/
-    ISMG("Goodbye To A World\n");
+    IMSG("Goodbye To A World\n");
 }
 
 static TEE_Result
@@ -59,14 +59,14 @@ add_two_numbers(uint32_t param_types,
 
     params[0].value.a = params[0].value.a + params[0].value.b;
 
-    return TEE_SUCCSESS;
+    return TEE_SUCCESS;
 }
 
 
 TEE_Result
 TA_InvokeCommandEntryPoint(void __maybe_unused *sess_ctx, 
                             uint32_t cmd_id, uint32_t param_types, 
-                            TEE_params params[4]){
+                            TEE_Param params[4]){
 
     if(cmd_id == TA_ADD_TWO_NUMBERS){
         return add_two_numbers(param_types, params);
