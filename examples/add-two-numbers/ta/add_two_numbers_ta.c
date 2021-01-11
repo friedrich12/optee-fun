@@ -8,12 +8,13 @@
 
 TEE_Result 
 TA_CreateEntryPoint(void){
+    IMSG("ENTRY POINT CREATED");
     return TEE_SUCCESS;
 }
 
 void 
 TA_DestroyEntryPoint(void){
-    // Do nothing    
+    IMSG("Destory Entry Point");
 }
 
 TEE_Result 
@@ -57,7 +58,7 @@ add_two_numbers(uint32_t param_types,
     IMSG("Got value: %u from NW", params[0].value.a);
     IMSG("Got value: %u from NW", params[1].value.a);
 
-    params[0].value.a = params[0].value.a + params[0].value.b;
+    params[0].value.a = params[0].value.a + params[1].value.a;
 
     return TEE_SUCCESS;
 }
