@@ -69,16 +69,15 @@ QUICKREF
 #include <string.h>
 #include <limits.h>
 
-#define LBLOCKSIZE   (sizeof(long))
+#define LBLOCKSIZE (sizeof(long))
 #define UNALIGNED(X) ((long)X & (LBLOCKSIZE - 1))
 
 #if LONG_MAX == 2147483647L
-#define DETECTNULL(X) (((X) - 0x01010101L) & ~(X) & 0x80808080UL)
+#define DETECTNULL(X) (((X)-0x01010101L) & ~(X)&0x80808080UL)
 #else
 #if LONG_MAX == 9223372036854775807L
 /* Nonzero if X (a long int) contains a NULL byte. */
-#define DETECTNULL(X) (((X) - 0x0101010101010101L) & ~(X) & \
-		       0x8080808080808080UL)
+#define DETECTNULL(X) (((X)-0x0101010101010101L) & ~(X)&0x8080808080808080UL)
 #else
 #error long int is not a 32bit or 64bit type.
 #endif
@@ -88,12 +87,13 @@ QUICKREF
 #error long int is not a 32bit or 64bit byte
 #endif
 
-size_t _DEFUN(strlen, (str), _CONST char *str)
+size_t
+_DEFUN(strlen, (str), _CONST char * str)
 {
-	_CONST char *start = str;
+	_CONST char * start = str;
 
 #if !defined(PREFER_SIZE_OVER_SPEED) && !defined(__OPTIMIZE_SIZE__)
-	unsigned long *aligned_addr;
+	unsigned long * aligned_addr;
 
 	/* Align the pointer, so we can search a word at a time.  */
 	while (UNALIGNED(str)) {

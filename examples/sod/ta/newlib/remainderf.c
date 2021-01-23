@@ -2,7 +2,8 @@
 #include "weak_alias.h"
 //#include "libc.h"
 
-float remainderf(float x, float y)
+float
+remainderf(float x, float y)
 {
 	int q;
 	return remquof(x, y, &q);

@@ -2,7 +2,8 @@
 #include <math.h>
 #include "libm.h"
 
-double scalbln(double x, long n)
+double
+scalbln(double x, long n)
 {
 	if (n > INT_MAX)
 		n = INT_MAX;

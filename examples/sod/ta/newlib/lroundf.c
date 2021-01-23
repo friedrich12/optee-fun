@@ -1,6 +1,7 @@
 #include <math.h>
 
-long lroundf(float x)
+long
+lroundf(float x)
 {
 	return roundf(x);
 }

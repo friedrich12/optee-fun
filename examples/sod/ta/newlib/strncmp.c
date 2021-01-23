@@ -74,15 +74,14 @@ QUICKREF
 
 /* Nonzero if either X or Y is not aligned on a "long" boundary.  */
 #define UNALIGNED(X, Y) \
-  (((long)X & (sizeof (long) - 1)) | ((long)Y & (sizeof (long) - 1)))
+	(((long)X & (sizeof(long) - 1)) | ((long)Y & (sizeof(long) - 1)))
 
 /* DETECTNULL returns nonzero if (long)X contains a NULL byte. */
 #if LONG_MAX == 2147483647L
-#define DETECTNULL(X) (((X) - 0x01010101L) & ~(X) & 0x80808080UL)
+#define DETECTNULL(X) (((X)-0x01010101L) & ~(X)&0x80808080UL)
 #else
 #if LONG_MAX == 9223372036854775807L
-#define DETECTNULL(X) (((X) - 0x0101010101010101L) & ~(X) & \
-		       0x8080808080808080UL)
+#define DETECTNULL(X) (((X)-0x0101010101010101L) & ~(X)&0x8080808080808080UL)
 #else
 #error long int is not a 32bit or 64bit type.
 #endif
@@ -92,65 +91,58 @@ QUICKREF
 #error long int is not a 32bit or 64bit byte
 #endif
 
-int 
-_DEFUN (strncmp, (s1, s2, n),
-	_CONST char *s1 _AND
-	_CONST char *s2 _AND
-	size_t n)
+int
+_DEFUN(strncmp, (s1, s2, n), _CONST char * s1 _AND _CONST char * s2 _AND size_t n)
 {
 #if defined(PREFER_SIZE_OVER_SPEED) || defined(__OPTIMIZE_SIZE__)
-  if (n == 0)
-    return 0;
+	if (n == 0)
+		return 0;
 
-  while (n-- != 0 && *s1 == *s2)
-    {
-      if (n == 0 || *s1 == '\0')
-	break;
-      s1++;
-      s2++;
-    }
+	while (n-- != 0 && *s1 == *s2) {
+		if (n == 0 || *s1 == '\0')
+			break;
+		s1++;
+		s2++;
+	}
 
-  return (*(unsigned char *) s1) - (*(unsigned char *) s2);
+	return (*(unsigned char *)s1) - (*(unsigned char *)s2);
 #else
-  unsigned long *a1;
-  unsigned long *a2;
+	unsigned long * a1;
+	unsigned long * a2;
 
-  if (n == 0)
-    return 0;
+	if (n == 0)
+		return 0;
 
-  /* If s1 or s2 are unaligned, then compare bytes. */
-  if (!UNALIGNED (s1, s2))
-    {
-      /* If s1 and s2 are word-aligned, compare them a word at a time. */
-      a1 = (unsigned long*)s1;
-      a2 = (unsigned long*)s2;
-      while (n >= sizeof (long) && *a1 == *a2)
-        {
-          n -= sizeof (long);
+	/* If s1 or s2 are unaligned, then compare bytes. */
+	if (!UNALIGNED(s1, s2)) {
+		/* If s1 and s2 are word-aligned, compare them a word at a time. */
+		a1 = (unsigned long *)s1;
+		a2 = (unsigned long *)s2;
+		while (n >= sizeof(long) && *a1 == *a2) {
+			n -= sizeof(long);
 
-          /* If we've run out of bytes or hit a null, return zero
+			/* If we've run out of bytes or hit a null, return zero
 	     since we already know *a1 == *a2.  */
-          if (n == 0 || DETECTNULL (*a1))
-	    return 0;
+			if (n == 0 || DETECTNULL(*a1))
+				return 0;
 
-          a1++;
-          a2++;
-        }
+			a1++;
+			a2++;
+		}
 
-      /* A difference was detected in last few bytes of s1, so search bytewise */
-      s1 = (char*)a1;
-      s2 = (char*)a2;
-    }
+		/* A difference was detected in last few bytes of s1, so search bytewise */
+		s1 = (char *)a1;
+		s2 = (char *)a2;
+	}
 
-  while (n-- > 0 && *s1 == *s2)
-    {
-      /* If we've run out of bytes or hit a null, return zero
+	while (n-- > 0 && *s1 == *s2) {
+		/* If we've run out of bytes or hit a null, return zero
 	 since we already know *s1 == *s2.  */
-      if (n == 0 || *s1 == '\0')
-	return 0;
-      s1++;
-      s2++;
-    }
-  return (*(unsigned char *) s1) - (*(unsigned char *) s2);
+		if (n == 0 || *s1 == '\0')
+			return 0;
+		s1++;
+		s2++;
+	}
+	return (*(unsigned char *)s1) - (*(unsigned char *)s2);
 #endif /* not PREFER_SIZE_OVER_SPEED */
 }

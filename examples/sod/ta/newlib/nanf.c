@@ -1,6 +1,7 @@
 #include <math.h>
 
-float nanf(const char *s)
+float
+nanf(const char * s)
 {
 	return NAN;
 }

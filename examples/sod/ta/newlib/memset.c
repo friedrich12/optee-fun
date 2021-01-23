@@ -69,18 +69,19 @@ QUICKREF
 #include <string.h>
 
 #define LBLOCKSIZE (sizeof(long))
-#define UNALIGNED(X)   ((long)X & (LBLOCKSIZE - 1))
+#define UNALIGNED(X) ((long)X & (LBLOCKSIZE - 1))
 #define TOO_SMALL(LEN) ((LEN) < LBLOCKSIZE)
 
-_PTR _DEFUN(memset, (m, c, n), _PTR m _AND int c _AND size_t n)
+_PTR
+_DEFUN(memset, (m, c, n), _PTR m _AND int c _AND size_t n)
 {
-	char *s = (char *)m;
+	char * s = (char *)m;
 
 #if !defined(PREFER_SIZE_OVER_SPEED) && !defined(__OPTIMIZE_SIZE__)
-	int i;
-	unsigned long buffer;
-	unsigned long *aligned_addr;
-	unsigned int d = c & 0xff;	/* To avoid sign extension, copy C to an
+	int				i;
+	unsigned long	buffer;
+	unsigned long * aligned_addr;
+	unsigned int	d = c & 0xff; /* To avoid sign extension, copy C to an
 					   unsigned variable.  */
 
 	while (UNALIGNED(s)) {

@@ -79,15 +79,14 @@ QUICKREF
 #define LBLOCKSIZE (sizeof(long))
 
 /* Threshhold for punting to the bytewise iterator.  */
-#define TOO_SMALL(LEN)  ((LEN) < LBLOCKSIZE)
+#define TOO_SMALL(LEN) ((LEN) < LBLOCKSIZE)
 
 #if LONG_MAX == 2147483647L
-#define DETECTNULL(X) (((X) - 0x01010101L) & ~(X) & 0x80808080UL)
+#define DETECTNULL(X) (((X)-0x01010101L) & ~(X)&0x80808080UL)
 #else
 #if LONG_MAX == 9223372036854775807L
 /* Nonzero if X (a long int) contains a NULL byte. */
-#define DETECTNULL(X) (((X) - 0x0101010101010101L) & ~(X) & \
-		       0x8080808080808080UL)
+#define DETECTNULL(X) (((X)-0x0101010101010101L) & ~(X)&0x8080808080808080UL)
 #else
 #error long int is not a 32bit or 64bit type.
 #endif
@@ -102,16 +101,15 @@ QUICKREF
 #define DETECTCHAR(X, MASK) (DETECTNULL(X ^ MASK))
 
 _PTR
-_DEFUN(memchr, (src_void, c, length), _CONST _PTR src_void _AND int c
-	_AND size_t length)
+_DEFUN(memchr, (src_void, c, length), _CONST _PTR src_void _AND int c _AND size_t length)
 {
-	_CONST unsigned char *src = (_CONST unsigned char *)src_void;
-	unsigned char d = c;
+	_CONST unsigned char * src = (_CONST unsigned char *)src_void;
+	unsigned char		   d   = c;
 
 #if !defined(PREFER_SIZE_OVER_SPEED) && !defined(__OPTIMIZE_SIZE__)
-	unsigned long *asrc;
-	unsigned long mask;
-	int i;
+	unsigned long * asrc;
+	unsigned long	mask;
+	int				i;
 
 	while (UNALIGNED(src)) {
 		if (!length--)

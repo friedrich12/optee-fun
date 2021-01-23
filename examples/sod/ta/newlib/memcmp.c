@@ -78,14 +78,14 @@ QUICKREF
 #define LBLOCKSIZE (sizeof(long))
 
 /* Threshhold for punting to the byte copier.  */
-#define TOO_SMALL(LEN)  ((LEN) < LBLOCKSIZE)
+#define TOO_SMALL(LEN) ((LEN) < LBLOCKSIZE)
 
 int
 _DEFUN(memcmp, (m1, m2, n), _CONST _PTR m1 _AND _CONST _PTR m2 _AND size_t n)
 {
 #if defined(PREFER_SIZE_OVER_SPEED) || defined(__OPTIMIZE_SIZE__)
-	unsigned char *s1 = (unsigned char *)m1;
-	unsigned char *s2 = (unsigned char *)m2;
+	unsigned char * s1 = (unsigned char *)m1;
+	unsigned char * s2 = (unsigned char *)m2;
 
 	while (n--) {
 		if (*s1 != *s2)
@@ -95,10 +95,10 @@ _DEFUN(memcmp, (m1, m2, n), _CONST _PTR m1 _AND _CONST _PTR m2 _AND size_t n)
 	}
 	return 0;
 #else
-	unsigned char *s1 = (unsigned char *)m1;
-	unsigned char *s2 = (unsigned char *)m2;
-	unsigned long *a1;
-	unsigned long *a2;
+	unsigned char * s1 = (unsigned char *)m1;
+	unsigned char * s2 = (unsigned char *)m2;
+	unsigned long * a1;
+	unsigned long * a2;
 
 	/* If the size is too small, or either pointer is unaligned,
 	   then we punt to the byte compare loop.  Hopefully this will

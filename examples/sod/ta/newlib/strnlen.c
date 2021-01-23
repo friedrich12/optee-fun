@@ -68,14 +68,12 @@ PORTABILITY
 #include <string.h>
 
 size_t
-_DEFUN (strnlen, (str, n),
-	_CONST char *str _AND
-	size_t n)
+_DEFUN(strnlen, (str, n), _CONST char * str _AND size_t n)
 {
-  _CONST char *start = str;
+	_CONST char * start = str;
 
-  while (n-- > 0 && *str)
-    str++;
+	while (n-- > 0 && *str)
+		str++;
 
-  return str - start;
+	return str - start;
 }

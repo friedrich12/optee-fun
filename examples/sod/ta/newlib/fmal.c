@@ -28,7 +28,8 @@
 
 #include "libm.h"
 #if LDBL_MANT_DIG == 53 && LDBL_MAX_EXP == 1024
-long double fmal(long double x, long double y, long double z)
+long double
+fmal(long double x, long double y, long double z)
 {
 	return fma(x, y, z);
 }
@@ -57,13 +58,14 @@ struct dd {
  * that both a and b are finite, but make no assumptions about their relative
  * magnitudes.
  */
-static inline struct dd dd_add(long double a, long double b)
+static inline struct dd
+dd_add(long double a, long double b)
 {
-	struct dd ret;
+	struct dd	ret;
 	long double s;
 
 	ret.hi = a + b;
-	s = ret.hi - a;
+	s	   = ret.hi - a;
 	ret.lo = (a - (ret.hi - s)) + (b - s);
 	return (ret);
 }
@@ -79,9 +81,10 @@ static inline struct dd dd_add(long double a, long double b)
  *     J. Coonen.  An Implementation Guide to a Proposed Standard for
  *     Floating-Point Arithmetic.  Computer, vol. 13, no. 1, Jan 1980.
  */
-static inline long double add_adjusted(long double a, long double b)
+static inline long double
+add_adjusted(long double a, long double b)
 {
-	struct dd sum;
+	struct dd	  sum;
 	union ldshape u;
 
 	sum = dd_add(a, b);
@@ -98,10 +101,11 @@ static inline long double add_adjusted(long double a, long double b)
  * that the result will be subnormal, and care is taken to ensure that
  * double rounding does not occur.
  */
-static inline long double add_and_denormalize(long double a, long double b, int scale)
+static inline long double
+add_and_denormalize(long double a, long double b, int scale)
 {
-	struct dd sum;
-	int bits_lost;
+	struct dd	  sum;
+	int			  bits_lost;
 	union ldshape u;
 
 	sum = dd_add(a, b);
@@ -117,7 +121,7 @@ static inline long double add_and_denormalize(long double a, long double b, int 
 	 * break the ties manually.
 	 */
 	if (sum.lo != 0) {
-		u.f = sum.hi;
+		u.f		  = sum.hi;
 		bits_lost = -u.i.se - scale + 1;
 		if ((bits_lost != 1) ^ LASTBIT(u))
 			sum.hi = nextafterl(sum.hi, INFINITY * sum.lo);
@@ -130,17 +134,18 @@ static inline long double add_and_denormalize(long double a, long double b, int 
  * that both a and b are normalized, so no underflow or overflow will occur.
  * The current rounding mode must be round-to-nearest.
  */
-static inline struct dd dd_mul(long double a, long double b)
+static inline struct dd
+dd_mul(long double a, long double b)
 {
-	struct dd ret;
+	struct dd	ret;
 	long double ha, hb, la, lb, p, q;
 
-	p = a * SPLIT;
+	p  = a * SPLIT;
 	ha = a - p;
 	ha += p;
 	la = a - ha;
 
-	p = b * SPLIT;
+	p  = b * SPLIT;
 	hb = b - p;
 	hb += p;
 	lb = b - hb;
@@ -162,14 +167,15 @@ static inline struct dd dd_mul(long double a, long double b)
  *      Dekker, T.  A Floating-Point Technique for Extending the
  *      Available Precision.  Numer. Math. 18, 224-242 (1971).
  */
-long double fmal(long double x, long double y, long double z)
+long double
+fmal(long double x, long double y, long double z)
 {
-	#pragma STDC FENV_ACCESS ON
+#pragma STDC FENV_ACCESS ON
 	long double xs, ys, zs, adj;
-	struct dd xy, r;
-	int oround;
-	int ex, ey, ez;
-	int spread;
+	struct dd	xy, r;
+	int			oround;
+	int			ex, ey, ez;
+	int			spread;
 
 	/*
 	 * Handle special cases. The order of operations and the particular
@@ -185,9 +191,9 @@ long double fmal(long double x, long double y, long double z)
 	if (z == 0.0)
 		return (x * y);
 
-	xs = frexpl(x, &ex);
-	ys = frexpl(y, &ey);
-	zs = frexpl(z, &ez);
+	xs	   = frexpl(x, &ex);
+	ys	   = frexpl(y, &ey);
+	zs	   = frexpl(z, &ez);
 	oround = fegetround();
 	spread = ex + ey - ez;
 
@@ -205,28 +211,28 @@ long double fmal(long double x, long double y, long double z)
 			feraiseexcept(FE_UNDERFLOW);
 #endif
 		switch (oround) {
-		default: /* FE_TONEAREST */
-			return (z);
-#ifdef FE_TOWARDZERO
-		case FE_TOWARDZERO:
-			if (x > 0.0 ^ y < 0.0 ^ z < 0.0)
+			default: /* FE_TONEAREST */
 				return (z);
-			else
-				return (nextafterl(z, 0));
+#ifdef FE_TOWARDZERO
+			case FE_TOWARDZERO:
+				if (x > 0.0 ^ y < 0.0 ^ z < 0.0)
+					return (z);
+				else
+					return (nextafterl(z, 0));
 #endif
 #ifdef FE_DOWNWARD
-		case FE_DOWNWARD:
-			if (x > 0.0 ^ y < 0.0)
-				return (z);
-			else
-				return (nextafterl(z, -INFINITY));
+			case FE_DOWNWARD:
+				if (x > 0.0 ^ y < 0.0)
+					return (z);
+				else
+					return (nextafterl(z, -INFINITY));
 #endif
 #ifdef FE_UPWARD
-		case FE_UPWARD:
-			if (x > 0.0 ^ y < 0.0)
-				return (nextafterl(z, INFINITY));
-			else
-				return (z);
+			case FE_UPWARD:
+				if (x > 0.0 ^ y < 0.0)
+					return (nextafterl(z, INFINITY));
+				else
+					return (z);
 #endif
 		}
 	}
@@ -246,7 +252,7 @@ long double fmal(long double x, long double y, long double z)
 	 *     result = r.hi + adj              (correctly rounded)
 	 */
 	xy = dd_mul(xs, ys);
-	r = dd_add(xy.hi, zs);
+	r  = dd_add(xy.hi, zs);
 
 	spread = ex + ey;
 
@@ -269,7 +275,7 @@ long double fmal(long double x, long double y, long double z)
 		 */
 		long double ret;
 #if defined(FE_INEXACT) && defined(FE_UNDERFLOW)
-		int e = fetestexcept(FE_INEXACT);
+		int			e = fetestexcept(FE_INEXACT);
 		feclearexcept(FE_INEXACT);
 #endif
 		fesetround(oround);

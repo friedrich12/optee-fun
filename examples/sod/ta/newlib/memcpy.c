@@ -73,21 +73,20 @@ QUICKREF
 	(((long)X & (sizeof(long) - 1)) | ((long)Y & (sizeof(long) - 1)))
 
 /* How many bytes are copied each iteration of the 4X unrolled loop.  */
-#define BIGBLOCKSIZE    (sizeof(long) << 2)
+#define BIGBLOCKSIZE (sizeof(long) << 2)
 
 /* How many bytes are copied each iteration of the word copy loop.  */
 #define LITTLEBLOCKSIZE (sizeof(long))
 
 /* Threshhold for punting to the byte copier.  */
-#define TOO_SMALL(LEN)  ((LEN) < BIGBLOCKSIZE)
+#define TOO_SMALL(LEN) ((LEN) < BIGBLOCKSIZE)
 
 _PTR
-_DEFUN(memcpy, (dst0, src0, len0), _PTR dst0 _AND _CONST _PTR src0 _AND
-	 size_t len0)
+_DEFUN(memcpy, (dst0, src0, len0), _PTR dst0 _AND _CONST _PTR src0 _AND size_t len0)
 {
 #if defined(PREFER_SIZE_OVER_SPEED) || defined(__OPTIMIZE_SIZE__)
-	char *dst = (char *)dst0;
-	char *src = (char *)src0;
+	char * dst = (char *)dst0;
+	char * src = (char *)src0;
 
 	_PTR save = dst0;
 
@@ -96,10 +95,10 @@ _DEFUN(memcpy, (dst0, src0, len0), _PTR dst0 _AND _CONST _PTR src0 _AND
 
 	return save;
 #else
-	char *dst = dst0;
-	_CONST char *src = src0;
-	long *aligned_dst;
-	_CONST long *aligned_src;
+	char *		  dst = dst0;
+	_CONST char * src = src0;
+	long *		  aligned_dst;
+	_CONST long * aligned_src;
 
 	/* If the size is small, or either SRC or DST is unaligned,
 	   then punt into the byte copy loop.  This should be rare.  */

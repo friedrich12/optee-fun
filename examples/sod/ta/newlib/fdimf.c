@@ -1,6 +1,7 @@
 #include <math.h>
 
-float fdimf(float x, float y)
+float
+fdimf(float x, float y)
 {
 	if (isnan(x))
 		return x;

@@ -27,7 +27,8 @@ most ideas and constants are from boost and python
 static const double pi = 3.141592653589793238462643383279502884;
 
 /* sin(pi x) with x > 0x1p-100, if sin(pi*x)==0 the sign is arbitrary */
-static double sinpi(double x)
+static double
+sinpi(double x)
 {
 	int n;
 
@@ -38,27 +39,27 @@ static double sinpi(double x)
 
 	/* reduce x into [-.25,.25] */
 	n = 4 * x;
-	n = (n+1)/2;
+	n = (n + 1) / 2;
 	x -= n * 0.5;
 
 	x *= pi;
 	switch (n) {
-	default: /* case 4 */
-	case 0:
-		return __sin(x, 0, 0);
-	case 1:
-		return __cos(x, 0);
-	case 2:
-		return __sin(-x, 0, 0);
-	case 3:
-		return -__cos(x, 0);
+		default: /* case 4 */
+		case 0:
+			return __sin(x, 0, 0);
+		case 1:
+			return __cos(x, 0);
+		case 2:
+			return __sin(-x, 0, 0);
+		case 3:
+			return -__cos(x, 0);
 	}
 }
 
 #define N 12
 //static const double g = 6.024680040776729583740234375;
-static const double gmhalf = 5.524680040776729583740234375;
-static const double Snum[N+1] = {
+static const double gmhalf		= 5.524680040776729583740234375;
+static const double Snum[N + 1] = {
 	23531376880.410759688572007674451636754734846804940,
 	42919803642.649098768957899047001988850926355848959,
 	35711959237.355668049440185451547166705960488635843,
@@ -73,23 +74,54 @@ static const double Snum[N+1] = {
 	210.82427775157934587250973392071336271166969580291,
 	2.5066282746310002701649081771338373386264310793408,
 };
-static const double Sden[N+1] = {
-	0, 39916800, 120543840, 150917976, 105258076, 45995730, 13339535,
-	2637558, 357423, 32670, 1925, 66, 1,
+static const double Sden[N + 1] = {
+	0,
+	39916800,
+	120543840,
+	150917976,
+	105258076,
+	45995730,
+	13339535,
+	2637558,
+	357423,
+	32670,
+	1925,
+	66,
+	1,
 };
 /* n! for small integer n */
 static const double fact[] = {
-	1, 1, 2, 6, 24, 120, 720, 5040.0, 40320.0, 362880.0, 3628800.0, 39916800.0,
-	479001600.0, 6227020800.0, 87178291200.0, 1307674368000.0, 20922789888000.0,
-	355687428096000.0, 6402373705728000.0, 121645100408832000.0,
-	2432902008176640000.0, 51090942171709440000.0, 1124000727777607680000.0,
+	1,
+	1,
+	2,
+	6,
+	24,
+	120,
+	720,
+	5040.0,
+	40320.0,
+	362880.0,
+	3628800.0,
+	39916800.0,
+	479001600.0,
+	6227020800.0,
+	87178291200.0,
+	1307674368000.0,
+	20922789888000.0,
+	355687428096000.0,
+	6402373705728000.0,
+	121645100408832000.0,
+	2432902008176640000.0,
+	51090942171709440000.0,
+	1124000727777607680000.0,
 };
 
 /* S(x) rational function for positive x */
-static double S(double x)
+static double
+S(double x)
 {
 	double_t num = 0, den = 0;
-	int i;
+	int		 i;
 
 	/* to avoid overflow handle large x differently */
 	if (x < 8)
@@ -102,31 +134,35 @@ static double S(double x)
 			num = num / x + Snum[i];
 			den = den / x + Sden[i];
 		}
-	return num/den;
+	return num / den;
 }
 
-double tgamma(double x)
+double
+tgamma(double x)
 {
-	union {double f; uint64_t i;} u = {x};
-	double absx, y;
+	union {
+		double	 f;
+		uint64_t i;
+	} u = {x};
+	double	 absx, y;
 	double_t dy, z, r;
-	uint32_t ix = u.i>>32 & 0x7fffffff;
-	int sign = u.i>>63;
+	uint32_t ix	  = u.i >> 32 & 0x7fffffff;
+	int		 sign = u.i >> 63;
 
 	/* special cases */
 	if (ix >= 0x7ff00000)
 		/* tgamma(nan)=nan, tgamma(inf)=inf, tgamma(-inf)=nan with invalid */
 		return x + INFINITY;
-	if (ix < (0x3ff-54)<<20)
+	if (ix < (0x3ff - 54) << 20)
 		/* |x| < 2^-54: tgamma(x) ~ 1/x, +-0 raises div-by-zero */
-		return 1/x;
+		return 1 / x;
 
 	/* integer arguments */
 	/* raise inexact when non-integer */
 	if (x == floor(x)) {
 		if (sign)
-			return 0/0.0;
-		if (x <= sizeof fact/sizeof *fact)
+			return 0 / 0.0;
+		if (x <= sizeof fact / sizeof *fact)
 			return fact[(int)x - 1];
 	}
 
@@ -134,7 +170,7 @@ double tgamma(double x)
 	/* x =< -184: tgamma(x)=+-0 with underflow */
 	if (ix >= 0x40670000) { /* |x| >= 184 */
 		if (sign) {
-			FORCE_EVAL((float)(0x1p-126/x));
+			FORCE_EVAL((float)(0x1p-126 / x));
 			if (floor(x) * 0.5 == floor(x * 0.5))
 				return 0;
 			return -0.0;
@@ -160,12 +196,12 @@ double tgamma(double x)
 	if (x < 0) {
 		/* reflection formula for negative x */
 		/* sinpi(absx) is not 0, integers are already handled */
-		r = -pi / (sinpi(absx) * absx * r);
+		r  = -pi / (sinpi(absx) * absx * r);
 		dy = -dy;
-		z = -z;
+		z  = -z;
 	}
-	r += dy * (gmhalf+0.5) * r / y;
-	z = pow(y, 0.5*z);
+	r += dy * (gmhalf + 0.5) * r / y;
+	z = pow(y, 0.5 * z);
 	y = r * z * z;
 	return y;
 }

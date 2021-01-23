@@ -1,6 +1,7 @@
 #include <math.h>
 
-double fdim(double x, double y)
+double
+fdim(double x, double y)
 {
 	if (isnan(x))
 		return x;

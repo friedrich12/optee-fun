@@ -7,11 +7,12 @@ special cases:
 	logb(nan) = nan
 */
 
-double logb(double x)
+double
+logb(double x)
 {
 	if (!isfinite(x))
 		return x * x;
 	if (x == 0)
-		return -1/(x*x);
+		return -1 / (x * x);
 	return ilogb(x);
 }

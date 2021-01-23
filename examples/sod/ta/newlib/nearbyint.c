@@ -3,10 +3,11 @@
 
 /* nearbyint is the same as rint, but it must not raise the inexact exception */
 
-double nearbyint(double x)
+double
+nearbyint(double x)
 {
 #ifdef FE_INEXACT
-	#pragma STDC FENV_ACCESS ON
+#pragma STDC FENV_ACCESS ON
 	int e;
 
 	e = fetestexcept(FE_INEXACT);

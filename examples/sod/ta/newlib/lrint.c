@@ -25,10 +25,11 @@ otherwise LONG_MAX and LONG_MIN can be represented exactly
 as a double.
 */
 
-#if LONG_MAX < 1U<<53 && defined(FE_INEXACT)
-long lrint(double x)
+#if LONG_MAX < 1U << 53 && defined(FE_INEXACT)
+long
+lrint(double x)
 {
-	#pragma STDC FENV_ACCESS ON
+#pragma STDC FENV_ACCESS ON
 	int e;
 
 	e = fetestexcept(FE_INEXACT);
@@ -39,7 +40,8 @@ long lrint(double x)
 	return x;
 }
 #else
-long lrint(double x)
+long
+lrint(double x)
 {
 	return rint(x);
 }

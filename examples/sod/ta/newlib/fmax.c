@@ -1,6 +1,7 @@
 #include <math.h>
 
-double fmax(double x, double y)
+double
+fmax(double x, double y)
 {
 	if (isnan(x))
 		return y;

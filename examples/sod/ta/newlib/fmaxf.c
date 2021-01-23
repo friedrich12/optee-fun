@@ -1,6 +1,7 @@
 #include <math.h>
 
-float fmaxf(float x, float y)
+float
+fmaxf(float x, float y)
 {
 	if (isnan(x))
 		return y;

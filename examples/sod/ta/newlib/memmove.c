@@ -76,22 +76,21 @@ QUICKREF
 	(((long)X & (sizeof(long) - 1)) | ((long)Y & (sizeof(long) - 1)))
 
 /* How many bytes are copied each iteration of the 4X unrolled loop.  */
-#define BIGBLOCKSIZE    (sizeof(long) << 2)
+#define BIGBLOCKSIZE (sizeof(long) << 2)
 
 /* How many bytes are copied each iteration of the word copy loop.  */
 #define LITTLEBLOCKSIZE (sizeof(long))
 
 /* Threshhold for punting to the byte copier.  */
-#define TOO_SMALL(LEN)  ((LEN) < BIGBLOCKSIZE)
+#define TOO_SMALL(LEN) ((LEN) < BIGBLOCKSIZE)
 
 /* SUPPRESS 20 */
 _PTR
-_DEFUN(memmove, (dst_void, src_void, length), _PTR dst_void _AND _CONST _PTR
-	src_void _AND size_t length)
+_DEFUN(memmove, (dst_void, src_void, length), _PTR dst_void _AND _CONST _PTR src_void _AND size_t length)
 {
 #if defined(PREFER_SIZE_OVER_SPEED) || defined(__OPTIMIZE_SIZE__)
-	char *dst = dst_void;
-	_CONST char *src = src_void;
+	char *		  dst = dst_void;
+	_CONST char * src = src_void;
 
 	if (src < dst && dst < src + length) {
 		/* Have to copy backwards */
@@ -106,10 +105,10 @@ _DEFUN(memmove, (dst_void, src_void, length), _PTR dst_void _AND _CONST _PTR
 
 	return dst_void;
 #else
-	char *dst = dst_void;
-	_CONST char *src = src_void;
-	long *aligned_dst;
-	_CONST long *aligned_src;
+	char *		  dst = dst_void;
+	_CONST char * src = src_void;
+	long *		  aligned_dst;
+	_CONST long * aligned_src;
 
 	if (src < dst && dst < src + length) {
 		/* Destructive overlap...have to copy backwards */

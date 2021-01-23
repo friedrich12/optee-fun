@@ -1,9 +1,13 @@
 #include "libm.h"
 
-float ceilf(float x)
+float
+ceilf(float x)
 {
-	union {float f; uint32_t i;} u = {x};
-	int e = (int)(u.i >> 23 & 0xff) - 0x7f;
+	union {
+		float	 f;
+		uint32_t i;
+	} u		   = {x};
+	int		 e = (int)(u.i >> 23 & 0xff) - 0x7f;
 	uint32_t m;
 
 	if (e >= 23)

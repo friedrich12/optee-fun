@@ -95,6 +95,7 @@ srcs-y += finitef.c
 srcs-y += floor.c
 srcs-y += floorf.c
 srcs-y += floorl.c
+srcs-y += fenv-stubs.c
 srcs-y += fma.c
 srcs-y += fmaf.c
 srcs-y += fmal.c

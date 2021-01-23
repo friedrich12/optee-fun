@@ -68,24 +68,18 @@ QUICKREF
 #include <string.h>
 
 char *
-_DEFUN (strrchr, (s, i),
-	_CONST char *s _AND
-	int i)
+_DEFUN(strrchr, (s, i), _CONST char * s _AND int i)
 {
-  _CONST char *last = NULL;
+	_CONST char * last = NULL;
 
-  if (i)
-    {
-      while ((s=strchr(s, i)))
-	{
-	  last = s;
-	  s++;
+	if (i) {
+		while ((s = strchr(s, i))) {
+			last = s;
+			s++;
+		}
+	} else {
+		last = strchr(s, i);
 	}
-    }
-  else
-    {
-      last = strchr(s, i);
-    }
 
-  return (char *) last;
+	return (char *)last;
 }

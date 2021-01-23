@@ -1,6 +1,7 @@
 #include <math.h>
 
-double fmin(double x, double y)
+double
+fmin(double x, double y)
 {
 	if (isnan(x))
 		return y;

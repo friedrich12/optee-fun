@@ -1,6 +1,7 @@
 #include <math.h>
 
-float tgammaf(float x)
+float
+tgammaf(float x)
 {
 	return tgamma(x);
 }

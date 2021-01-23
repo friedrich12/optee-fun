@@ -155,16 +155,13 @@ PORTABILITY
  * alphabets and digits are each contiguous.
  */
 unsigned long
-_DEFUN (_strtoul, (nptr, endptr, base),
-	_CONST char *nptr _AND
-	char **endptr _AND
-	int base)
+_DEFUN(_strtoul, (nptr, endptr, base), _CONST char * nptr _AND char ** endptr _AND int base)
 {
-	register const unsigned char *s = (const unsigned char *)nptr;
-	register unsigned long acc;
-	register int c;
-	register unsigned long cutoff;
-	register int neg = 0, any, cutlim;
+	register const unsigned char * s = (const unsigned char *)nptr;
+	register unsigned long		   acc;
+	register int				   c;
+	register unsigned long		   cutoff;
+	register int				   neg = 0, any, cutlim;
 
 	/*
 	 * See strtol for comments as to the logic used.
@@ -174,11 +171,11 @@ _DEFUN (_strtoul, (nptr, endptr, base),
 	} while (isspace(c));
 	if (c == '-') {
 		neg = 1;
-		c = *s++;
+		c	= *s++;
 	} else if (c == '+')
 		c = *s++;
 	if ((base == 0 || base == 16) &&
-	    c == '0' && (*s == 'x' || *s == 'X')) {
+		c == '0' && (*s == 'x' || *s == 'X')) {
 		c = s[1];
 		s += 2;
 		base = 16;
@@ -196,7 +193,7 @@ _DEFUN (_strtoul, (nptr, endptr, base),
 			break;
 		if (c >= base)
 			break;
-               if (any < 0 || acc > cutoff || (acc == cutoff && c > cutlim))
+		if (any < 0 || acc > cutoff || (acc == cutoff && c > cutlim))
 			any = -1;
 		else {
 			any = 1;
@@ -209,19 +206,16 @@ _DEFUN (_strtoul, (nptr, endptr, base),
 	} else if (neg)
 		acc = -acc;
 	if (endptr != 0)
-		*endptr = (char *) (any ? (char *)s - 1 : nptr);
+		*endptr = (char *)(any ? (char *)s - 1 : nptr);
 	return (acc);
 }
 
 #ifndef _REENT_ONLY
 
 unsigned long
-_DEFUN (strtoul, (s, ptr, base),
-	_CONST char *s _AND
-	char **ptr _AND
-	int base)
+_DEFUN(strtoul, (s, ptr, base), _CONST char * s _AND char ** ptr _AND int base)
 {
-	return _strtoul (s, ptr, base);
+	return _strtoul(s, ptr, base);
 }
 
 #endif

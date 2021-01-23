@@ -18,22 +18,27 @@
 #include "libm.h"
 
 #if LDBL_MANT_DIG == 53 && LDBL_MAX_EXP == 1024
-long double cbrtl(long double x)
+long double
+cbrtl(long double x)
 {
 	return cbrt(x);
 }
 #elif (LDBL_MANT_DIG == 64 || LDBL_MANT_DIG == 113) && LDBL_MAX_EXP == 16384
 static const unsigned B1 = 709958130; /* B1 = (127-127.0/3-0.03306235651)*2**23 */
 
-long double cbrtl(long double x)
+long double
+cbrtl(long double x)
 {
 	union ldshape u = {x}, v;
-	union {float f; uint32_t i;} uft;
+	union {
+		float	 f;
+		uint32_t i;
+	} uft;
 	long double r, s, t, w;
-	double_t dr, dt, dx;
-	float_t ft;
-	int e = u.i.se & 0x7fff;
-	int sign = u.i.se & 0x8000;
+	double_t	dr, dt, dx;
+	float_t		ft;
+	int			e	 = u.i.se & 0x7fff;
+	int			sign = u.i.se & 0x8000;
 
 	/*
 	 * If x = +-Inf, then cbrt(x) = +-Inf.
@@ -52,21 +57,21 @@ long double cbrtl(long double x)
 	}
 	e -= 0x3fff;
 	u.i.se = 0x3fff;
-	x = u.f;
+	x	   = u.f;
 	switch (e % 3) {
-	case 1:
-	case -2:
-		x *= 2;
-		e--;
-		break;
-	case 2:
-	case -1:
-		x *= 4;
-		e -= 2;
-		break;
+		case 1:
+		case -2:
+			x *= 2;
+			e--;
+			break;
+		case 2:
+		case -1:
+			x *= 4;
+			e -= 2;
+			break;
 	}
-	v.f = 1.0;
-	v.i.se = sign | (0x3fff + e/3);
+	v.f	   = 1.0;
+	v.i.se = sign | (0x3fff + e / 3);
 
 	/*
 	 * The following is the guts of s_cbrtf, with the handling of
@@ -76,8 +81,8 @@ long double cbrtl(long double x)
 
 	/* ~5-bit estimate: */
 	uft.f = x;
-	uft.i = (uft.i & 0x7fffffff)/3 + B1;
-	ft = uft.f;
+	uft.i = (uft.i & 0x7fffffff) / 3 + B1;
+	ft	  = uft.f;
 
 	/* ~16-bit estimate: */
 	dx = x;
@@ -112,11 +117,11 @@ long double cbrtl(long double x)
 	 * Final step Newton iteration to 64 or 113 bits with
 	 * error < 0.667 ulps
 	 */
-	s = t*t;         /* t*t is exact */
-	r = x/s;         /* error <= 0.5 ulps; |r| < |t| */
-	w = t+t;         /* t+t is exact */
-	r = (r-t)/(w+r); /* r-t is exact; w+r ~= 3*t */
-	t = t+t*r;       /* error <= 0.5 + 0.5/3 + epsilon */
+	s = t * t;			   /* t*t is exact */
+	r = x / s;			   /* error <= 0.5 ulps; |r| < |t| */
+	w = t + t;			   /* t+t is exact */
+	r = (r - t) / (w + r); /* r-t is exact; w+r ~= 3*t */
+	t = t + t * r;		   /* error <= 0.5 + 0.5/3 + epsilon */
 
 	t *= v.f;
 	return t;

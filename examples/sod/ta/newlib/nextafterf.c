@@ -1,8 +1,12 @@
 #include "libm.h"
 
-float nextafterf(float x, float y)
+float
+nextafterf(float x, float y)
 {
-	union {float f; uint32_t i;} ux={x}, uy={y};
+	union {
+		float	 f;
+		uint32_t i;
+	} ux = {x}, uy = {y};
 	uint32_t ax, ay, e;
 
 	if (isnan(x) || isnan(y))
@@ -22,9 +26,9 @@ float nextafterf(float x, float y)
 	e = ux.i & 0x7f800000;
 	/* raise overflow if ux.f is infinite and x is finite */
 	if (e == 0x7f800000)
-		FORCE_EVAL(x+x);
+		FORCE_EVAL(x + x);
 	/* raise underflow if ux.f is subnormal or zero */
 	if (e == 0)
-		FORCE_EVAL(x*x + ux.f*ux.f);
+		FORCE_EVAL(x * x + ux.f * ux.f);
 	return ux.f;
 }

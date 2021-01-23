@@ -30,18 +30,28 @@ typedef struct {
 
 typedef __mlibc_uint16 fexcept_t;
 
-int feclearexcept(int);
-int fegetenv(fenv_t *);
-int fegetexceptflag(fexcept_t *, int);
-int fegetround(void);
-int feholdexcept(fenv_t *);
-int feraiseexcept(int);
-int fesetenv(const fenv_t *);
-int fesetexceptflag(const fexcept_t *, int);
-int fesetround(int);
-int fetestexcept(int);
-int feupdateenv(const fenv_t *);
 
+int feclearexcept(int a);
+
+int fegetenv(fenv_t * a);
+
+int fegetexceptflag(fexcept_t * a, int b);
+
+int fegetround(void);
+
+int feholdexcept(fenv_t * a);
+
+int feraiseexcept(int a);
+
+int fesetenv(const fenv_t * a);
+
+int fesetexceptflag(const fexcept_t * a, int b);
+
+int fesetround(int a);
+
+int fetestexcept(int a);
+
+int feupdateenv(const fenv_t * a);
 #ifdef __cplusplus
 }
 #endif
