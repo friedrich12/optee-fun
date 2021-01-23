@@ -69,7 +69,7 @@ TA_InvokeCommandEntryPoint(void __maybe_unused *sess_ctx,
                             uint32_t cmd_id, uint32_t param_types, 
                             TEE_Param params[4]){
 
-    if(cmd_id == TA_ADD_TWO_NUMBERS){
+    if(cmd_id == TA_SODTEST){
         return sodtest(param_types, params);
     }
 }
