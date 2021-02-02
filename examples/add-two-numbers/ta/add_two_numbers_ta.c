@@ -1,6 +1,5 @@
 // Copyright (c) 2020, Friedrich Doku
 
-
 #include <tee_internal_api.h>
 #include <tee_internal_api_extensions.h>
 
