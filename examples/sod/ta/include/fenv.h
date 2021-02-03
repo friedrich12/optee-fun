@@ -56,6 +56,6 @@ int feupdateenv(const fenv_t * a);
 }
 #endif
 
-#define FE_DFL_ENV ((const fenv_t *) -1)
+#define FE_DFL_ENV ((const fenv_t *)-1)
 
-#endif // _FENV_H
+#endif	  // _FENV_H

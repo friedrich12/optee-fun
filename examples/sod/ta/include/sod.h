@@ -34,17 +34,17 @@
  */
 /* Make sure we can call this stuff from C++ */
 #ifdef __cplusplus
- extern "C" {
-#endif 
+extern "C" {
+#endif
 /*
  * Marker for exported interfaces.
  */
-#if defined (_MSC_VER) || defined (__MINGW32__) ||  defined (__GNUC__) && defined (__declspec)
-#define SOD_APIIMPORT	__declspec(dllimport)
-#define SOD_APIEXPORT	__declspec(dllexport)
+#if defined(_MSC_VER) || defined(__MINGW32__) || defined(__GNUC__) && defined(__declspec)
+#define SOD_APIIMPORT __declspec(dllimport)
+#define SOD_APIEXPORT __declspec(dllexport)
 #else
-#define	SOD_APIIMPORT
-#define	SOD_APIEXPORT
+#define SOD_APIIMPORT
+#define SOD_APIEXPORT
 #endif
 /*
  * The SOD_VERSION C preprocessor macro evaluates to a string literal
@@ -53,7 +53,7 @@
  * number.
  */
 #define SOD_VERSION "1.1.8"
- /*
+/*
  * The SOD_VERSION_NUMBER C preprocessor macro resolves to an integer
  * with the value (X*1000000 + Y*1000 + Z) where X, Y, and Z are the same
  * numbers used in [SOD_VERSION].
@@ -97,13 +97,13 @@ typedef struct sod_realnet_trainer sod_realnet_trainer;
  * This structure and related interfaces are documented at https://sod.pixlab.io/api.html#sod_box.
  */
 struct sod_box {
-	int x;  /* The x-coordinate of the upper-left corner of the rectangle */
-	int y;  /* The y-coordinate of the upper-left corner of the rectangle */
-	int w;  /* Rectangle width */
-	int h;  /* Rectangle height */
-	float score;       /* Confidence threshold. */
-	const char *zName; /* Detected object name. I.e. person, face, dog, car, plane, cat, bicycle, etc. */
-	void *pUserData;   /* External pointer used by some modules such as the face landmarks, NSFW classifier, pose estimator, etc. */
+	int			 x;			/* The x-coordinate of the upper-left corner of the rectangle */
+	int			 y;			/* The y-coordinate of the upper-left corner of the rectangle */
+	int			 w;			/* Rectangle width */
+	int			 h;			/* Rectangle height */
+	float		 score;		/* Confidence threshold. */
+	const char * zName;		/* Detected object name. I.e. person, face, dog, car, plane, cat, bicycle, etc. */
+	void *		 pUserData; /* External pointer used by some modules such as the face landmarks, NSFW classifier, pose estimator, etc. */
 };
 /*
  * Internally, each in-memory representation of an input image or video frame
@@ -117,10 +117,10 @@ struct sod_box {
  * This structure and related interfaces are documented at https://sod.pixlab.io/api.html#sod_img.
  */
 struct sod_img {
-	int h;   /* Image/frame height */
-	int w;   /* Image/frame width */
-	int c;   /* Image depth/Total number of color channels e.g. 1 for grayscale images, 3 RGB, etc. */
-	float *data; /* Blob */
+	int		h;	  /* Image/frame height */
+	int		w;	  /* Image/frame width */
+	int		c;	  /* Image depth/Total number of color channels e.g. 1 for grayscale images, 3 RGB, etc. */
+	float * data; /* Blob */
 };
 /*
  * An instance of the `sod_pts` structure describe a 2D point in space with integer coordinates
@@ -153,7 +153,7 @@ typedef enum {
 	SOD_RNN_TEXT_LENGTH,
 	SOD_RNN_DATA_LENGTH,
 	SOD_RNN_SEED
-}SOD_CNN_CONFIG;
+} SOD_CNN_CONFIG;
 /* 
  * RNN Consumer callback to be used in conjunction with the `SOD_RNN_CALLBACK` configuration verb.
  * 
@@ -166,26 +166,26 @@ typedef void (*ProcRnnCallback)(const char *, size_t, void *);
 *
 * The documentation is available to consult at https://sod.pixlab.io/c_api/sod_cnn_config.html.
 */
-typedef void(*ProcLogCallback)(const char *, size_t, void *);
+typedef void (*ProcLogCallback)(const char *, size_t, void *);
 /* 
  * Macros to be used in conjunction with the `sod_img_load_from_file()` or `sod_img_load_from_mem()` interfaces.
  */
-#define SOD_IMG_COLOR     0 /* Load full color channels. */
+#define SOD_IMG_COLOR 0		/* Load full color channels. */
 #define SOD_IMG_GRAYSCALE 1 /* Load an image in the grayscale colorpsace only (single channel). */
 /* 
  * Macros around a stack allocated `sod_img` instance.
  */
-#define SOD_IMG_2_INPUT(IMG)  (IMG.data)  /* Pointer to raw binary contents (blobs) of an image or frame. */
+#define SOD_IMG_2_INPUT(IMG) (IMG.data)	  /* Pointer to raw binary contents (blobs) of an image or frame. */
 #define SOD_IS_EMPTY_IMG(IMG) (!IMG.data) /* NIL pointer test (marker for an empty or broken image format). */
 /*
  * Possible return value from each exported SOD interface defined below.
  */
-#define SOD_OK           0 /* Everything went well */
+#define SOD_OK 0		   /* Everything went well */
 #define SOD_UNSUPPORTED -1 /* Unsupported Pixel format */
-#define SOD_OUTOFMEM    -4 /* Out-of-Memory */
-#define SOD_ABORT	    -5 /* User callback request an operation abort */
-#define SOD_IOERR       -6 /* IO error */
-#define SOD_LIMIT       -7 /* Limit reached */
+#define SOD_OUTOFMEM -4	   /* Out-of-Memory */
+#define SOD_ABORT -5	   /* User callback request an operation abort */
+#define SOD_IOERR -6	   /* IO error */
+#define SOD_LIMIT -7	   /* Limit reached */
 /*
  * An integer configuration option that determines what property of a `sod_realnet_trainer` handle is to be configured.
  * Subsequent arguments vary depending on the configuration verb.
@@ -197,7 +197,7 @@ typedef void(*ProcLogCallback)(const char *, size_t, void *);
 typedef enum {
 	SOD_REALNET_TR_LOG_CALLBACK = 1,
 	SOD_REALNET_TR_OUTPUT_MODEL
-}SOD_REALNET_TRAINER_CONFIG;
+} SOD_REALNET_TRAINER_CONFIG;
 #endif /* SOD_ENABLE_NET_TRAIN */
 /*
 * An integer configuration option that determines what property of a `sod_realnet` handle is to be configured.
@@ -216,7 +216,7 @@ typedef enum {
 	SOD_REALNET_MODEL_DISCARD_NULL_BOXES,
 	SOD_REALNET_MODEL_NAME,
 	SOD_REALNET_MODEL_ABOUT_INFO
-}SOD_REALNET_MODEL_CONFIG;
+} SOD_REALNET_MODEL_CONFIG;
 /*
  * SOD Embedded C/C++ API. 
  *
@@ -229,34 +229,34 @@ typedef enum {
  *
  * The interfaces are documented at https://sod.pixlab.io/api.html#cnn.
  */
-SOD_APIEXPORT int  sod_cnn_create(sod_cnn **ppOut, const char *zArch, const char *zModelPath, const char **pzErr);
-SOD_APIEXPORT int  sod_cnn_config(sod_cnn *pNet, SOD_CNN_CONFIG conf, ...);
-SOD_APIEXPORT int  sod_cnn_predict(sod_cnn *pNet, float *pInput, sod_box **paBox, int *pnBox);
-SOD_APIEXPORT void sod_cnn_destroy(sod_cnn *pNet);
-SOD_APIEXPORT float *  sod_cnn_prepare_image(sod_cnn *pNet, sod_img in);
-SOD_APIEXPORT int sod_cnn_get_network_size(sod_cnn *pNet, int *pWidth, int *pHeight, int *pChannels);
+SOD_APIEXPORT int	  sod_cnn_create(sod_cnn ** ppOut, const char * zArch, const char * zModelPath, const char ** pzErr);
+SOD_APIEXPORT int	  sod_cnn_config(sod_cnn * pNet, SOD_CNN_CONFIG conf, ...);
+SOD_APIEXPORT int	  sod_cnn_predict(sod_cnn * pNet, float * pInput, sod_box ** paBox, int * pnBox);
+SOD_APIEXPORT void	  sod_cnn_destroy(sod_cnn * pNet);
+SOD_APIEXPORT float * sod_cnn_prepare_image(sod_cnn * pNet, sod_img in);
+SOD_APIEXPORT int	  sod_cnn_get_network_size(sod_cnn * pNet, int * pWidth, int * pHeight, int * pChannels);
 #endif /* SOD_DISABLE_CNN */
 /*
  * RealNets API.
  *
  * The interfaces are documented at https://sod.pixlab.io/api.html#realnet.
  */
-SOD_APIEXPORT int sod_realnet_create(sod_realnet **ppOut);
-SOD_APIEXPORT int sod_realnet_load_model_from_mem(sod_realnet *pNet, const void * pModel, unsigned int nBytes, sod_realnet_model_handle *pOutHandle);
-SOD_APIEXPORT int sod_realnet_load_model_from_disk(sod_realnet *pNet, const char * zPath, sod_realnet_model_handle *pOutHandle);
-SOD_APIEXPORT int sod_realnet_model_config(sod_realnet *pNet, sod_realnet_model_handle handle, SOD_REALNET_MODEL_CONFIG conf, ...);
-SOD_APIEXPORT int sod_realnet_detect(sod_realnet *pNet, const unsigned char *zGrayImg, int width, int height, sod_box **apBox, int *pnBox);
-SOD_APIEXPORT void sod_realnet_destroy(sod_realnet *pNet);
+SOD_APIEXPORT int sod_realnet_create(sod_realnet ** ppOut);
+SOD_APIEXPORT int sod_realnet_load_model_from_mem(sod_realnet * pNet, const void * pModel, unsigned int nBytes, sod_realnet_model_handle * pOutHandle);
+//SOD_APIEXPORT int sod_realnet_load_model_from_disk(sod_realnet *pNet, const char * zPath, sod_realnet_model_handle *pOutHandle);
+SOD_APIEXPORT int  sod_realnet_model_config(sod_realnet * pNet, sod_realnet_model_handle handle, SOD_REALNET_MODEL_CONFIG conf, ...);
+SOD_APIEXPORT int  sod_realnet_detect(sod_realnet * pNet, const unsigned char * zGrayImg, int width, int height, sod_box ** apBox, int * pnBox);
+SOD_APIEXPORT void sod_realnet_destroy(sod_realnet * pNet);
 #ifdef SOD_ENABLE_NET_TRAIN
 /*
  * RealNets Training API.
  *
  * The interfaces are documented at https://sod.pixlab.io/api.html#realnet_train.
  */
-SOD_APIEXPORT int  sod_realnet_train_init(sod_realnet_trainer **ppOut);
-SOD_APIEXPORT int  sod_realnet_train_config(sod_realnet_trainer *pTrainer, SOD_REALNET_TRAINER_CONFIG op, ...);
-SOD_APIEXPORT int  sod_realnet_train_start(sod_realnet_trainer *pTrainer, const char *zConf);
-SOD_APIEXPORT void sod_realnet_train_release(sod_realnet_trainer *pTrainer);
+SOD_APIEXPORT int  sod_realnet_train_init(sod_realnet_trainer ** ppOut);
+SOD_APIEXPORT int  sod_realnet_train_config(sod_realnet_trainer * pTrainer, SOD_REALNET_TRAINER_CONFIG op, ...);
+SOD_APIEXPORT int  sod_realnet_train_start(sod_realnet_trainer * pTrainer, const char * zConf);
+SOD_APIEXPORT void sod_realnet_train_release(sod_realnet_trainer * pTrainer);
 #endif /* SOD_ENABLE_NET_TRAIN */
 /* 
  * Image Processing API.
@@ -265,30 +265,40 @@ SOD_APIEXPORT void sod_realnet_train_release(sod_realnet_trainer *pTrainer);
  */
 SOD_APIEXPORT sod_img sod_make_empty_image(int w, int h, int c);
 SOD_APIEXPORT sod_img sod_make_image(int w, int h, int c);
-SOD_APIEXPORT int sod_grow_image(sod_img *pImg,int w, int h, int c);
+SOD_APIEXPORT int	  sod_grow_image(sod_img * pImg, int w, int h, int c);
 SOD_APIEXPORT sod_img sod_make_random_image(int w, int h, int c);
 SOD_APIEXPORT sod_img sod_copy_image(sod_img m);
-SOD_APIEXPORT void sod_free_image(sod_img m);
+SOD_APIEXPORT void	  sod_free_image(sod_img m);
+
+#ifdef _SBK_SGX
+SOD_APIEXPORT uint8_t * sod_img_export_as_jpeg(sod_img input, int Quality, size_t * out_size);
+#endif
 
 #ifndef SOD_DISABLE_IMG_READER
-SOD_APIEXPORT sod_img sod_img_load_from_file(const char *zFile, int nChannels);
-SOD_APIEXPORT sod_img sod_img_load_from_mem(const unsigned char *zBuf, int buf_len, int nChannels);
-SOD_APIEXPORT int  sod_img_set_load_from_directory(const char *zPath, sod_img ** apLoaded, int * pnLoaded, int max_entries);
-SOD_APIEXPORT void sod_img_set_release(sod_img *aLoaded, int nEntries);
+//SOD_APIEXPORT sod_img sod_img_load_from_file(const char *zFile, int nChannels);
+SOD_APIEXPORT sod_img sod_img_load_from_mem(const unsigned char * zBuf, int buf_len, int nChannels);
+//SOD_APIEXPORT int  sod_img_set_load_from_directory(const char *zPath, sod_img ** apLoaded, int * pnLoaded, int max_entries);
+SOD_APIEXPORT void sod_img_set_release(sod_img * aLoaded, int nEntries);
 #ifndef SOD_DISABLE_IMG_WRITER
-SOD_APIEXPORT int sod_img_save_as_png(sod_img input, const char *zPath);
-SOD_APIEXPORT int sod_img_save_as_jpeg(sod_img input, const char *zPath, int Quality);
-SOD_APIEXPORT int sod_img_blob_save_as_png(const char * zPath, const unsigned char *zBlob, int width, int height, int nChannels);
-SOD_APIEXPORT int sod_img_blob_save_as_jpeg(const char * zPath, const unsigned char *zBlob, int width, int height, int nChannels, int Quality);
-SOD_APIEXPORT int sod_img_blob_save_as_bmp(const char * zPath, const unsigned char *zBlob, int width, int height, int nChannels);
+SOD_APIEXPORT int sod_img_save_as_png(sod_img input, const char * zPath);
+SOD_APIEXPORT int sod_img_save_as_jpeg(sod_img input, const char * zPath, int Quality);
+SOD_APIEXPORT int sod_img_blob_save_as_png(const char * zPath, const unsigned char * zBlob, int width, int height, int nChannels);
+SOD_APIEXPORT int sod_img_blob_save_as_jpeg(const char * zPath, const unsigned char * zBlob, int width, int height, int nChannels, int Quality);
+SOD_APIEXPORT int sod_img_blob_save_as_bmp(const char * zPath, const unsigned char * zBlob, int width, int height, int nChannels);
 #endif /* SOD_DISABLE_IMG_WRITER */
+
+#ifdef _SBK_SGX
+#define sod_img_load_color(zBuf, buf_len) sod_img_load_from_mem(zBuf, buf_len, SOD_IMG_COLOR)
+#define sod_img_load_grayscale(zBuf, buf_len) sod_img_load_from_mem(zBuf, buf_len, SOD_IMG_GRAYSCALE)
+#else
 #define sod_img_load_color(zPath) sod_img_load_from_file(zPath, SOD_IMG_COLOR)
 #define sod_img_load_grayscale(zPath) sod_img_load_from_file(zPath, SOD_IMG_GRAYSCALE)
+#endif
 #endif /* SOD_DISABLE_IMG_READER */
 
-SOD_APIEXPORT float sod_img_get_pixel(sod_img m, int x, int y, int c);
-SOD_APIEXPORT void sod_img_set_pixel(sod_img m, int x, int y, int c, float val);
-SOD_APIEXPORT void sod_img_add_pixel(sod_img m, int x, int y, int c, float val);
+SOD_APIEXPORT float	  sod_img_get_pixel(sod_img m, int x, int y, int c);
+SOD_APIEXPORT void	  sod_img_set_pixel(sod_img m, int x, int y, int c, float val);
+SOD_APIEXPORT void	  sod_img_add_pixel(sod_img m, int x, int y, int c, float val);
 SOD_APIEXPORT sod_img sod_img_get_layer(sod_img m, int l);
 
 SOD_APIEXPORT void sod_img_rgb_to_hsv(sod_img im);
@@ -298,12 +308,12 @@ SOD_APIEXPORT void sod_img_bgr_to_rgb(sod_img im);
 SOD_APIEXPORT void sod_img_yuv_to_rgb(sod_img im);
 SOD_APIEXPORT void sod_img_rgb_to_yuv(sod_img im);
 
-SOD_APIEXPORT sod_img sod_minutiae(sod_img bin, int *pTotal, int *pEp, int *pBp);
+SOD_APIEXPORT sod_img sod_minutiae(sod_img bin, int * pTotal, int * pEp, int * pBp);
 SOD_APIEXPORT sod_img sod_gaussian_noise_reduce(sod_img grayscale);
 SOD_APIEXPORT sod_img sod_equalize_histogram(sod_img im);
 
 SOD_APIEXPORT sod_img sod_grayscale_image(sod_img im);
-SOD_APIEXPORT void sod_grayscale_image_3c(sod_img im);
+SOD_APIEXPORT void	  sod_grayscale_image_3c(sod_img im);
 
 SOD_APIEXPORT sod_img sod_threshold_image(sod_img im, float thresh);
 SOD_APIEXPORT sod_img sod_otsu_binarize_image(sod_img im);
@@ -317,20 +327,20 @@ SOD_APIEXPORT sod_img sod_hilditch_thin_image(sod_img im);
 SOD_APIEXPORT sod_img sod_sobel_image(sod_img im);
 SOD_APIEXPORT sod_img sod_canny_edge_image(sod_img im, int reduce_noise);
 
-SOD_APIEXPORT sod_pts * sod_hough_lines_detect(sod_img im, int threshold, int *nPts);
-SOD_APIEXPORT void sod_hough_lines_release(sod_pts *pLines);
+SOD_APIEXPORT sod_pts * sod_hough_lines_detect(sod_img im, int threshold, int * nPts);
+SOD_APIEXPORT void		sod_hough_lines_release(sod_pts * pLines);
 
-SOD_APIEXPORT int sod_image_find_blobs(sod_img im, sod_box **paBox, int *pnBox, int(*xFilter)(int width, int height));
-SOD_APIEXPORT void sod_image_blob_boxes_release(sod_box *pBox);
+SOD_APIEXPORT int  sod_image_find_blobs(sod_img im, sod_box ** paBox, int * pnBox, int (*xFilter)(int width, int height));
+SOD_APIEXPORT void sod_image_blob_boxes_release(sod_box * pBox);
 
-SOD_APIEXPORT void sod_composite_image(sod_img source, sod_img dest, int dx, int dy);
-SOD_APIEXPORT void sod_flip_image(sod_img input);
+SOD_APIEXPORT void	  sod_composite_image(sod_img source, sod_img dest, int dx, int dy);
+SOD_APIEXPORT void	  sod_flip_image(sod_img input);
 SOD_APIEXPORT sod_img sod_image_distance(sod_img a, sod_img b);
 
-SOD_APIEXPORT void sod_embed_image(sod_img source, sod_img dest, int dx, int dy);
+SOD_APIEXPORT void	  sod_embed_image(sod_img source, sod_img dest, int dx, int dy);
 SOD_APIEXPORT sod_img sod_blend_image(sod_img fore, sod_img back, float alpha);
-SOD_APIEXPORT void sod_scale_image_channel(sod_img im, int c, float v);
-SOD_APIEXPORT void sod_translate_image_channel(sod_img im, int c, float v);
+SOD_APIEXPORT void	  sod_scale_image_channel(sod_img im, int c, float v);
+SOD_APIEXPORT void	  sod_translate_image_channel(sod_img im, int c, float v);
 
 SOD_APIEXPORT sod_img sod_resize_image(sod_img im, int w, int h);
 SOD_APIEXPORT sod_img sod_resize_max(sod_img im, int max);
@@ -356,7 +366,7 @@ SOD_APIEXPORT void sod_image_draw_bbox_width(sod_img im, sod_box bbox, int width
 SOD_APIEXPORT void sod_image_draw_line(sod_img im, sod_pts start, sod_pts end, float r, float g, float b);
 
 SOD_APIEXPORT unsigned char * sod_image_to_blob(sod_img im);
-SOD_APIEXPORT void sod_image_free_blob(unsigned char *zBlob);
+SOD_APIEXPORT void			  sod_image_free_blob(unsigned char * zBlob);
 /*
  * OpenCV Integration API. The library must be compiled against OpenCV
  * with the compile-time directive SOD_ENABLE_OPENCV defined.
@@ -372,11 +382,11 @@ SOD_APIEXPORT void sod_image_free_blob(unsigned char *zBlob);
 #include <opencv2/highgui/highgui_c.h>
 #include <opencv2/imgproc/imgproc_c.h>
 
-SOD_APIEXPORT sod_img sod_img_load_cv_ipl(IplImage* src);
-SOD_APIEXPORT sod_img sod_img_load_from_cv(const char *filename, int channels);
-SOD_APIEXPORT sod_img sod_img_load_from_cv_stream(CvCapture *cap);
-SOD_APIEXPORT int  sod_img_fill_from_cv_stream(CvCapture *cap, sod_img *pImg);
-SOD_APIEXPORT void sod_img_save_to_cv_jpg(sod_img im, const char *zPath);
+SOD_APIEXPORT sod_img sod_img_load_cv_ipl(IplImage * src);
+SOD_APIEXPORT sod_img sod_img_load_from_cv(const char * filename, int channels);
+SOD_APIEXPORT sod_img sod_img_load_from_cv_stream(CvCapture * cap);
+SOD_APIEXPORT int	  sod_img_fill_from_cv_stream(CvCapture * cap, sod_img * pImg);
+SOD_APIEXPORT void	  sod_img_save_to_cv_jpg(sod_img im, const char * zPath);
 #endif /* SOD_ENABLE_OPENCV */
 /*
  * SOD Embedded Release Information & Copyright Notice.
@@ -384,6 +394,6 @@ SOD_APIEXPORT void sod_img_save_to_cv_jpg(sod_img im, const char *zPath);
 SOD_APIEXPORT const char * sod_lib_copyright(void);
 #define SOD_LIB_INFO "SOD Embedded - Release 1.1.8 under GPLv3. Copyright (C) 2018 - 2019 PixLab| Symisc Systems, https://sod.pixlab.io"
 #ifdef __cplusplus
- }
-#endif 
+}
+#endif
 #endif /* _SOD_H_ */

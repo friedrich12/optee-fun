@@ -86,7 +86,7 @@ USAGE:
 	  int stbi_write_force_png_filter;         // defaults to -1; set to 0..5 to force a filter mode
 
 
-   You can define STBI_WRITE_NO_STDIO to disable the file variant of these
+  You can define STBI_WRITE_NO_STDIO to disable the file variant of these
    functions, so the library will not use stdio.h at all. However, this will
    also disable HDR writing, because it requires stdio for formatted output.
 
@@ -162,6 +162,7 @@ LICENSE
   See end of file for license information.
 
 */
+#define _SBK_SGX
 
 #ifndef INCLUDE_STB_IMAGE_WRITE_H
 #define INCLUDE_STB_IMAGE_WRITE_H
@@ -762,6 +763,8 @@ static int stbi_write_hdr_core(stbi__write_context *s, int x, int y, int comp, f
 
 #ifdef __STDC_WANT_SECURE_LIB__
 		len = sprintf_s(buffer, sizeof(buffer), "EXPOSURE=          1.0000000000000\n\n-Y %d +X %d\n", y, x);
+#elif defined(_SBK_SGX)
+		len = snprintf(buffer, sizeof(buffer) - 1, "EXPOSURE=          1.0000000000000\n\n-Y %d +X %d\n", y, x);
 #else
 		len = sprintf(buffer, "EXPOSURE=          1.0000000000000\n\n-Y %d +X %d\n", y, x);
 #endif
@@ -1698,3 +1701,4 @@ ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 ------------------------------------------------------------------------------
 */
+ 
