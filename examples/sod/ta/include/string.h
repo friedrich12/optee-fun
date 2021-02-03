@@ -30,7 +30,7 @@ char * strstr(const char * big, const char * little);
 char * strcpy(char * dest, const char * src);
 char * strncpy(char * dest, const char * src, size_t n);
 char * strrchr(const char * s, int i);
-
+long strtol(const char *nptr, char **endptr, register int base);
 void * memchr(const void * buf, int c, size_t length);
 
 #endif /* STRING_H */

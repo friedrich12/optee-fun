@@ -241,7 +241,7 @@ srcs-y += tgammal.c
 srcs-y += trunc.c
 srcs-y += truncf.c
 srcs-y += truncl.c
-
+srcs-y += strtol.c
 
 
 

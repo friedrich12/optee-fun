@@ -621,12 +621,12 @@ static const sod_vfs * sodExportBuiltinVfs(void)
 /* From http://en.wikipedia.org/wiki/Box%E2%80%93Muller_transform */
 #define TWO_PI 6.2831853071795864769252866
 #ifdef _SBK_SGX
-#include <sbk_util.h>
+//#include <sbk_util.h>
 
 int rand()
 {
 	int ret = 0;
-	sbk_get_rand_bytes((uint8_t *)&ret, sizeof(int));
+	//sbk_get_rand_bytes((uint8_t *)&ret, sizeof(int));
 	return ret;
 }
 
@@ -9835,8 +9835,8 @@ void sod_img_set_release(sod_img *aLoaded, int nEntries)
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include"sod_img_writer.h"
 #ifdef _SBK_SGX
-#include <sbk_util.h>
-#include <sbk_log.h>
+//#include <sbk_util.h>
+//#include <sbk_log.h>
 
 struct __sbk_img_context {
 	uint8_t * dst_ptr; 
@@ -9859,12 +9859,12 @@ __sbk_img_write_fn(void * context,
 		uint32_t new_chunk_cnt = (new_img_size / IMG_CHUNK_SIZE) + 1;
 		uint32_t new_buf_size =  new_chunk_cnt * IMG_CHUNK_SIZE;
 
-		log_debug("Expanding Destination buf to %lu bytes\n", new_buf_size);
+	//	log_debug("Expanding Destination buf to %lu bytes\n", new_buf_size);
 
-		img_ctx->dst_ptr = sbk_realloc(img_ctx->dst_ptr, new_buf_size);
+	//	img_ctx->dst_ptr = sbk_realloc(img_ctx->dst_ptr, new_buf_size);
 
 		if (img_ctx->dst_ptr == NULL) {
-			log_error("Realloc Error (requested size=%lu)\n", new_buf_size);
+	//		log_error("Realloc Error (requested size=%lu)\n", new_buf_size);
 			return;
 		}
 		img_ctx->buf_size = new_buf_size;
@@ -9885,7 +9885,7 @@ sod_img_export_as_jpeg(sod_img input, int Quality, size_t * out_size)
 	int rc;
 
 	if (zJpeg == 0) {
-		log_error("Could not convert image to blob\n");
+	//	log_error("Could not convert image to blob\n");
 		return NULL;
 	}
 
@@ -9900,7 +9900,7 @@ sod_img_export_as_jpeg(sod_img input, int Quality, size_t * out_size)
 	sod_image_free_blob(zJpeg);
 
 	if (rc == 0) {
-		log_error("Could not write JPEG\n");
+	//	log_error("Could not write JPEG\n");
 		return NULL;
 	}
 
