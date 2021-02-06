@@ -1,6 +1,8 @@
 #ifndef SODTEST_H
 #define SODTEST_H
 
+#include <sod.h>
+
 #define SODTEST_UUID                                       \
 	{                                                      \
 		0xd0bdb12d, 0x75be, 0x4156,                        \

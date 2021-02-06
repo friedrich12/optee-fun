@@ -6,9 +6,10 @@ OBJCOPY ?= $(CROSS_COMPILE)objcopy
 OBJDUMP ?= $(CROSS_COMPILE)objdump
 READELF ?= $(CROSS_COMPILE)readelf
 
-OBJS = main.o
+OBJS = main.o incbin.o face.realnet.o
 
 CFLAGS += -Wall -I../ta/include -I$(TEEC_EXPORT)/include -I./include
+
 #Add/link other required libraries here
 LDADD += -lteec -L$(TEEC_EXPORT)/lib
 
@@ -25,5 +26,7 @@ clean:
 	rm -f $(OBJS) $(BINARY)
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c main.c -o main.o
+	$(CC) -c face.realnet.S -o face.realnet.o
+	$(CC) -c incbin.c -o incbin.o
 

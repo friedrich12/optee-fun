@@ -1,5 +1,5 @@
-rm -R ../../optee/optee_examples/add-two-numbers
-rm -R ../../optee/optee_examples/sod
+rm -R ../../../optee/optee_examples/add-two-numbers
+rm -R ../../../optee/optee_examples/sod
 
-cp -R ./add-two-numbers ../../optee/optee_examples/add-two-numbers
-cp -R ./add-two-numbers ../../optee/optee_examples/sod
+cp -R ./add-two-numbers ../../../optee/optee_examples/add-two-numbers
+cp -R ./sod ../../../optee/optee_examples/sod

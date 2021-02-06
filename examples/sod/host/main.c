@@ -17,6 +17,7 @@
  */
 
 #include <err.h>
+#include <compiler.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -26,9 +27,17 @@
 /* To the the UUID (found the the TA's h-file(s)) */
 #include <sodtest_ta.h>
 
+#include "incbin.h"
+
+#define INCBIN_PREFIX 
+#define INCBIN_STYLE INCBIN_STYLE_SNAKE
+
 int 
 main(void)
 {
+    // Load the model into memory
+    INCBIN(face_realnet_model, "face.realnet.sod");
+
 	TEEC_Result res;
 	TEEC_Context ctx;
 	TEEC_Session sess;
@@ -64,23 +73,22 @@ main(void)
 	 * Prepare the argument. Pass a value in the first parameter,
 	 * the remaining three parameters are unused.
 	 */
-	op.paramTypes = TEEC_PARAM_TYPES(TEEC_VALUE_INOUT, TEEC_VALUE_INPUT,
+	op.paramTypes = TEEC_PARAM_TYPES(TEEC_MEMREF_TEMP_INPUT, TEEC_NONE,
 					 TEEC_NONE, TEEC_NONE);
-	op.params[0].value.a = 42;
-    op.params[1].value.a = 50;
+	op.params[0].tmpref.buffer = face_realnet_model_data;
+    op.params[1].tmpref.size = face_realnet_model_size;
 
 	/*
 	 * TA_HELLO_WORLD_CMD_INC_VALUE is the actual function in the TA to be
 	 * called.
 	 */
-	printf("Adding two numbers %d %d\n", op.params[0].value.a,
-            op.params[1].value.a);
+	printf("SENDING MODEL.. \n");
 	res = TEEC_InvokeCommand(&sess, TA_SODTEST, &op,
 				 &err_origin);
 	if (res != TEEC_SUCCESS)
 		errx(1, "TEEC_InvokeCommand failed with code 0x%x origin 0x%x",
 			res, err_origin);
-	printf("42+50 =  %d\n", op.params[0].value.a);
+	printf("IT DIDN'T FAIL!!");
 
 	/*
 	 * We're done with the TA, close the session and
