@@ -17,10 +17,8 @@
  */
 
 #include <err.h>
-#include <compiler.h>
 #include <stdio.h>
 #include <string.h>
-
 /* OP-TEE TEE client API (built by optee_client) */
 #include <tee_client_api.h>
 
@@ -28,16 +26,21 @@
 #include <sodtest_ta.h>
 
 #include "incbin.h"
+#include "xphoton_util.h"
 
 #define INCBIN_PREFIX 
 #define INCBIN_STYLE INCBIN_STYLE_SNAKE
 
+
+// Load the model into memory
+INCBIN(face_realnet_model, "/host/face.realnet.sod");
+
 int 
 main(void)
 {
-    // Load the model into memory
-    INCBIN(face_realnet_model, "face.realnet.sod");
 
+    printf("File loaded\n");
+    
 	TEEC_Result res;
 	TEEC_Context ctx;
 	TEEC_Session sess;
@@ -76,7 +79,7 @@ main(void)
 	op.paramTypes = TEEC_PARAM_TYPES(TEEC_MEMREF_TEMP_INPUT, TEEC_NONE,
 					 TEEC_NONE, TEEC_NONE);
 	op.params[0].tmpref.buffer = face_realnet_model_data;
-    op.params[1].tmpref.size = face_realnet_model_size;
+    op.params[0].tmpref.size = face_realnet_model_size;
 
 	/*
 	 * TA_HELLO_WORLD_CMD_INC_VALUE is the actual function in the TA to be
