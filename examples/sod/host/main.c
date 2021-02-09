@@ -81,17 +81,13 @@ main(void)
 	op.params[0].tmpref.buffer = face_realnet_model_data;
     op.params[0].tmpref.size = face_realnet_model_size;
 
-	/*
-	 * TA_HELLO_WORLD_CMD_INC_VALUE is the actual function in the TA to be
-	 * called.
-	 */
 	printf("SENDING MODEL.. \n");
 	res = TEEC_InvokeCommand(&sess, TA_SODTEST, &op,
 				 &err_origin);
 	if (res != TEEC_SUCCESS)
 		errx(1, "TEEC_InvokeCommand failed with code 0x%x origin 0x%x",
 			res, err_origin);
-	printf("IT DIDN'T FAIL!!");
+	printf("PASSED!!");
 
 	/*
 	 * We're done with the TA, close the session and
